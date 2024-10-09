@@ -4,7 +4,7 @@ module ButCor {
   item Fleshofcorpse {
     Type=Food,
     FoodType=Meat,
-    Weight=0.15,
+    Weight=3,
     DisplayName=Corpse Flesh,
     Icon=CorpseFlesh,
 	DangerousUncooked = TRUE,
@@ -27,7 +27,7 @@ module ButCor {
   item CookedCorpseFlesh {
     Type=Food,
     FoodType=Meat,
-    Weight=0.15,
+    Weight=3,
     DisplayName=Corpse Flesh,
     Icon=CorpseFlesh,
 	DangerousUncooked = TRUE,
