@@ -5,7 +5,7 @@ module ButCor {
   } 
 
 
-  recipe Butcher Corpse {
+  recipe ButCor Butcher Corpse {
     keep Machete/MeatCleaver/HandAxe/Axe/WoodAxe/HuntingKnife,
     CorpseMale/CorpseFemale,
     Result:Fleshofcorpse=3,
