@@ -1,0 +1,18 @@
+module ButCor {
+
+  imports {
+    Base
+  } 
+
+
+  recipe Butcher Corpse {
+    keep Machete/MeatCleaver/HandAxe/Axe/WoodAxe/HuntingKnife,
+    CorpseMale/CorpseFemale,
+    Result:Fleshofcorpse=3,
+    Time:240.0,
+    OnCreate:onCreate_getFreshResult,
+    Category:General,
+  }
+  
+}
+  

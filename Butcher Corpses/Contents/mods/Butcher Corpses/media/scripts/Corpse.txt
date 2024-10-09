@@ -1,0 +1,50 @@
+module ButCor {
+
+  
+  item Fleshofcorpse {
+    Type=Food,
+    FoodType=Meat,
+    Weight=0.15,
+    DisplayName=Corpse Flesh,
+    Icon=CorpseFlesh,
+	DangerousUncooked = TRUE,
+    HungerChange=-20,
+	Calories = 110,
+	Carbohydrates = 0,
+	Lipids = 5,
+	Proteins = 15,
+	UnhappyChange = 75,
+	StressChange = 75,
+	IsCookable = TRUE,
+	ReplaceOnCooked = ButCor.CookedCorpseFlesh,
+	MinutesToCook = 60,
+    OnEat = OnEat_CorpseFlesh,
+    DaysFresh=1,
+    DaysTotallyRotten=1,
+    Tooltip=Tooltip_CorpseFlesh,
+  }
+  
+  item CookedCorpseFlesh {
+    Type=Food,
+    FoodType=Meat,
+    Weight=0.15,
+    DisplayName=Corpse Flesh,
+    Icon=CorpseFlesh,
+	DangerousUncooked = TRUE,
+	BadCold = true,
+    HungerChange=-20,
+	Calories = 110,
+	Carbohydrates = 0,
+	Lipids = 5,
+	Proteins = 15,
+	UnhappyChange = 75,
+	StressChange = 75,
+	IsCookable = TRUE,
+	MinutesToCook = 0, 
+	MinutesToBurn = 30,
+	DaysFresh=1,
+    DaysTotallyRotten=1,
+	Tooltip=Tooltip_CookedCorpseFlesh,
+  }
+
+}
