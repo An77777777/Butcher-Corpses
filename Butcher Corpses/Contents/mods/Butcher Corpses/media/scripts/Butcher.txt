@@ -8,7 +8,7 @@ module ButCor {
   recipe ButCor Butcher Corpse {
     keep Machete/MeatCleaver/HandAxe/Axe/WoodAxe/HuntingKnife,
     CorpseMale/CorpseFemale,
-    Result:Fleshofcorpse=3,
+    Result:Fleshofcorpse=10,
     Time:240.0,
     OnCreate:onCreate_getFreshResult,
     Category:General,
