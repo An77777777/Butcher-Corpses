@@ -4,5 +4,12 @@ end
 
 function OnEat_CorpseFlesh(food, player)
   local bodyDamage = player:getBodyDamage();
+  bodyDamage:setFoodSicknessLevel(100);
   bodyDamage:setInfected(true);
+ end
+
+ 
+ function OnEat_CookedCorpseFlesh(food, player)
+  local bodyDamage = player:getBodyDamage();
+  bodyDamage:setFoodSicknessLevel(100);
  end

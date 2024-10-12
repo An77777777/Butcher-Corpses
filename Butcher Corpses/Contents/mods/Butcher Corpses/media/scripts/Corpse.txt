@@ -43,6 +43,7 @@ module ButCor {
 	IsCookable = TRUE,
 	MinutesToCook = 0, 
 	MinutesToBurn = 20,
+    OnEat = OnEat_CookedCorpseFlesh,
 	DaysFresh=1,
     DaysTotallyRotten=1,
 	Tooltip=Tooltip_CookedCorpseFlesh,
