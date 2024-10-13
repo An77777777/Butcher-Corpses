@@ -10,7 +10,7 @@ module ButCor {
     CorpseMale/CorpseFemale,
     Result:Fleshofcorpse=10,
     Time:240.0,
-    OnCreate:onCreate_getFreshResult,
+    OnCreate:ButcherCorpsesUtil.onCreate_getFreshResult,
     Category:General,
   }
   
