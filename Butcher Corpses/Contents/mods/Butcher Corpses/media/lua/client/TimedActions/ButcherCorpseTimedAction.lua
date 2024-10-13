@@ -51,15 +51,19 @@ function ButcherCorpseAction:perform()
     self.corpse:setJobDelta(0.0);
     self.character:getInventory():setDrawDirty(true);
     
-    local recipe = getScriptManager():getRecipe("ButCor.ButCor Butcher Corpse")
-    local result = recipe:getResult()
+    local result = ButcherCorpses.Recipe:getResult();
+    local corpseSquare = self.corpseBody:getSquare();
 
     for i=1, result:getCount() do
-      self.character:getInventory():AddItem(result:getFullType());
+        if SandboxVars.ButCor.DropMeatOnGround then
+            corpseSquare:AddWorldInventoryItem(result:getFullType(), 0, 0, 0)
+        else
+            self.character:getInventory():AddItem(result:getFullType());
+        end
     end
-
-    self.corpseBody:getSquare():removeCorpse(self.corpseBody, false);
-
+    
+    corpseSquare:removeCorpse(self.corpseBody, false);
+    
     local pdata = getPlayerData(self.character:getPlayerNum());
     if pdata ~= nil then
         pdata.playerInventory:refreshBackpacks();
