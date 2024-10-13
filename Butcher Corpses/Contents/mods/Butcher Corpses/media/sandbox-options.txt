@@ -11,3 +11,9 @@ option ButCor.EffectOnEatCooked
 	type = enum, numValues = 4, default = 1, 
 	page = ButCor, translation = ButCorEffectOnEatCooked,
 }
+
+option ButCor.DropMeatOnGround
+{
+	type = boolean, default = false, 
+	page = ButCor, translation = ButCorDropMeatOnGround,
+}
