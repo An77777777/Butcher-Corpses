@@ -12,27 +12,46 @@ end
 
 function ButcherCorpseAction:waitToStart()
     self.character:faceThisObject(self.corpseBody)
-    return self.character:shouldBeTurning()
+    return self.character:shouldBeTurning();
 end
 
 function ButcherCorpseAction:update()
     if self.soundTime + ButcherCorpseAction.soundDelay < getTimestamp() then
-        self.soundTime = getTimestamp()
-        self.sound = self.character:getEmitter():playSound("SliceMeat")
-        addSound(self.character, self.character:getX(), self.character:getY(), self.character:getZ(), 10, 10)
+        self.soundTime = getTimestamp();
+
+        -- play sound
+        self.sound = self.character:getEmitter():playSound("SliceMeat");
+        addSound(self.character, self.character:getX(), self.character:getY(), self.character:getZ(), 10, 10);
+
+        -- create blood on environment
+        addBloodSplat(self.corpseBody:getSquare(), ZombRand(15, 25));
+        self.character:splatBlood(2.0, 1.0);
+
+        -- add random blood to character, with scratch blood, no bites, only outer layer
+        self.character:addBlood(nil, true, false, false);
+
+        -- increase item blood level
+        local itemBlood = self.butcherItem:getBloodLevel();
+        if itemBlood <= 0.95 then
+            self.butcherItem:setBloodLevel(itemBlood + 0.05);
+            self.character:resetModel();
+        elseif itemBlood <= 1 then
+            self.butcherItem:setBloodLevel(1);
+            self.character:resetModel();
+        end
     end
 
     self.corpse:setJobDelta(self:getJobDelta());
     self.character:faceThisObject(self.corpseBody);
 
-    self.character:setMetabolicTarget(Metabolics.LightWork);
+    self.character:setMetabolicTarget(Metabolics.HeavyWork);
 end
 
 function ButcherCorpseAction:start()
-    self.corpse:setJobType(getText("ContextMenu_Recipe_ButCor_Butcher_Corpse"));
+    self.corpse:setJobType(getText("ContextMenu_ButCor_Butcher_Corpse"));
     self.corpse:setJobDelta(0.0);
-    self:setActionAnim("Loot");
     self.character:SetVariable("LootPosition", "Low");
+    self:setActionAnim("Loot");
 
     self.character:reportEvent("EventLootItem");
 end
@@ -47,7 +66,6 @@ function ButcherCorpseAction:stop()
 end
 
 function ButcherCorpseAction:perform()
-    --forceDropHeavyItems(self.character)
     self.corpse:setJobDelta(0.0);
     self.character:getInventory():setDrawDirty(true);
     
@@ -86,10 +104,7 @@ function ButcherCorpseAction:new(character, corpse, butcherItem, time)
     o.stopOnRun = true;
     o.maxTime = time;
     o.forceProgressBar = true;
-    o.soundTime = 0
+    o.soundTime = 0;
 
-    --if character:isTimedActionInstant() then
-    --    o.maxTime = 1;
-    --end
     return o
 end
