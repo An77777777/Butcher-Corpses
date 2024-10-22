@@ -14,6 +14,6 @@ option ButCor.EffectOnEatCooked
 
 option ButCor.DropMeatOnGround
 {
-	type = boolean, default = false, 
+	type = boolean, default = true, 
 	page = ButCor, translation = ButCorDropMeatOnGround,
 }
