@@ -8,7 +8,7 @@ local function getRecipeTools()
 			return source:getItems()
 		end
 	end
-	return {"Machete", "MeatCleaver", "HandAxe", "Axe", "WoodAxe", "HuntingKnife"}
+	return {"Machete", "MeatCleaver", "HandAxe", "Axe", "WoodAxe", "[Recipe.GetItemTypes.SharpKnife]","[Recipe.GetItemTypes.Saw]"}
 end
 
 local function hasRequiredWeapon(player)
