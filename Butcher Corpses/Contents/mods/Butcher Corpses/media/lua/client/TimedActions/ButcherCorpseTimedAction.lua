@@ -30,14 +30,16 @@ function ButcherCorpseAction:update()
         -- add random blood to character, with scratch blood, no bites, only outer layer
         self.character:addBlood(nil, true, false, false);
 
-        -- increase item blood level
-        local itemBlood = self.butcherItem:getBloodLevel();
-        if itemBlood <= 0.95 then
-            self.butcherItem:setBloodLevel(itemBlood + 0.05);
-            self.character:resetModel();
-        elseif itemBlood <= 1 then
-            self.butcherItem:setBloodLevel(1);
-            self.character:resetModel();
+        -- increase item blood level if using a weapon
+        if self.usesWeapon then
+            local itemBlood = self.butcherItem:getBloodLevel();
+            if itemBlood <= 0.95 then
+                self.butcherItem:setBloodLevel(itemBlood + 0.05);
+                self.character:resetModel();
+            elseif itemBlood <= 1 then
+                self.butcherItem:setBloodLevel(1);
+                self.character:resetModel();
+            end
         end
     end
 
@@ -100,6 +102,7 @@ function ButcherCorpseAction:new(character, corpse, butcherItem, time)
     o.corpse = corpse:getItem();
     o.corpseBody = corpse;
     o.butcherItem = butcherItem;
+    o.usesWeapon = instanceof(self.butcherItem, "HandWeapon")
     o.stopOnWalk = true;
     o.stopOnRun = true;
     o.maxTime = time;
