@@ -9,7 +9,7 @@ module ButCor {
     keep MeatCleaver/HandAxe/Axe/WoodAxe/[Recipe.GetItemTypes.SharpKnife]/[Recipe.GetItemTypes.Saw],
     CorpseMale/CorpseFemale,
     Result:Fleshofcorpse=10,
-	  Sound:PZ_FoodSwoosh,
+	Sound:SliceMeat,
     Time:240.0,
     OnCreate:ButcherCorpsesUtil.onCreate_getFreshResult,
     Category:General,
