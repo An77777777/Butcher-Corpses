@@ -1,59 +1,47 @@
 ButcherCorpses = {};
 
 ButcherCorpses.Recipe = getScriptManager():getRecipe("ButCor.ButCor Butcher Corpse")
-
-local function getRecipeTools()
-    for _,source in ipairs(ButcherCorpses.Recipe:getSource()) do
-		if source:isKeep() then
-			return source:getItems()
-		end
+ButcherCorpses.RecipeTools = {}
+for i=0, ButcherCorpses.Recipe:getSource():size()-1 do
+	local source = ButcherCorpses.Recipe:getSource():get(i);
+	if source:isKeep() then
+		ButcherCorpses.RecipeTools = source:getItems()
+		break
 	end
-	return {"Machete", "MeatCleaver", "HandAxe", "Axe", "WoodAxe", "HuntingKnife"}
 end
 
-local function hasRequiredWeapon(player)
+local function hasButcherTool(player)
     local inventory = getSpecificPlayer(player):getInventory()
-    for _, weapon in ipairs(getRecipeTools()) do
-        if inventory:contains(weapon) then
+	for i=0, ButcherCorpses.RecipeTools:size()-1 do
+		local recipeTool = ButcherCorpses.RecipeTools:get(i)
+        if inventory:containsTypeRecurse(recipeTool) then
             return true
         end
     end
     return false
 end
 
-local function isButcherItem(item)
-    for _, weapon in ipairs(getRecipeTools()) do
-        if not item:isBroken() and item:getType() == weapon then
-			return true
-		end
-    end
+local function isButcherTool(item)
+	if item then
+    	for i=0, ButcherCorpses.RecipeTools:size()-1 do
+			local recipeTool = ButcherCorpses.RecipeTools:get(i)
+    	     if recipeTool and not item:isBroken() and item:getFullType() == recipeTool then
+			 	return true
+			 end
+    	end
+	end
 	return false
 end
 
-ButcherCorpses.getButcherItem = function(player)
+ButcherCorpses.getButcherTool = function(player)
 	local playerInv = player:getInventory();
 	-- first check if we have a valid tool equipped
 	local handItem = player:getPrimaryHandItem()
-	if handItem and isButcherItem(handItem) then
+	if handItem and isButcherTool(handItem) then
 		return handItem
 	end
 	-- if not, check if there's a valid tool in inventory
-	return playerInv:getFirstEvalRecurse(isButcherItem)
-end
-
-local oldCreateMenu = ISWorldObjectContextMenu.createMenu
-ISWorldObjectContextMenu.createMenu = function(player, worldobjects, x, y, test)
-    -- call the original createMenu function
-    local context = oldCreateMenu(player, worldobjects, x, y, test)
-
-	-- add butcher option requirements met
-	if hasRequiredWeapon(player) then
-    	local body = IsoObjectPicker.Instance:PickCorpse(x, y)
-    	if body then
-			context:addOption(getText("ContextMenu_ButCor_Butcher_Corpse"), worldobjects, ButcherCorpses.onButcherCorpse, body, player);
-    	end
-	end
-	return context
+	return playerInv:getFirstEvalRecurse(isButcherTool)
 end
 
 ButcherCorpses.onButcherCorpse = function(worldobjects, WItem, player)
@@ -61,8 +49,20 @@ ButcherCorpses.onButcherCorpse = function(worldobjects, WItem, player)
 	-- walk to corpse
 	if WItem:getSquare() and luautils.walkAdj(playerObj, WItem:getSquare()) then
 		-- equip item and start action
-		local butcherItem = ISWorldObjectContextMenu.equip(playerObj, playerObj:getPrimaryHandItem(), ButcherCorpses.getButcherItem(playerObj), true);
-		ISTimedActionQueue.add(ButcherCorpseAction:new(playerObj, WItem,butcherItem, ButcherCorpses.Recipe:getTimeToMake()));
+		local butcherItem = ButcherCorpses.getButcherTool(playerObj)
+		if butcherItem then
+			butcherItem = ISWorldObjectContextMenu.equip(playerObj, playerObj:getPrimaryHandItem(), butcherItem, true)
+			ISTimedActionQueue.add(ButcherCorpseAction:new(playerObj, WItem,butcherItem, ButcherCorpses.Recipe:getTimeToMake()));			
+		else
+			print("No valid tool found! Likely broken...")
+		end
 	end
 end
 
+ButcherCorpses.onButcherMenu = function(player, context, worldobjects)
+	if body and hasButcherTool(player) then
+		context:addOption(getText("ContextMenu_ButCor_Butcher_Corpse"), worldobjects, ButcherCorpses.onButcherCorpse, body, player);
+	end
+end
+
+Events.OnFillWorldObjectContextMenu.Add(ButcherCorpses.onButcherMenu);

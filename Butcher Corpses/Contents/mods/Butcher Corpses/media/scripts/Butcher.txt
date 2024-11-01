@@ -6,9 +6,10 @@ module ButCor {
 
 
   recipe ButCor Butcher Corpse {
-    keep Machete/MeatCleaver/HandAxe/Axe/WoodAxe/HuntingKnife,
+    keep MeatCleaver/HandAxe/Axe/WoodAxe/[Recipe.GetItemTypes.SharpKnife]/[Recipe.GetItemTypes.Saw],
     CorpseMale/CorpseFemale,
     Result:Fleshofcorpse=10,
+	Sound:SliceMeat,
     Time:240.0,
     OnCreate:ButcherCorpsesUtil.onCreate_getFreshResult,
     Category:General,
